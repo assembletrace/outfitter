@@ -1,0 +1,45 @@
+#!/usr/bin/env php
+<?php
+
+use AssembleTrace\Outfitter\Commands\AddServerCommand;
+use Illuminate\Container\Container;
+use Illuminate\Events\Dispatcher;
+use Illuminate\Filesystem\Filesystem;
+use Illuminate\View\Compilers\BladeCompiler;
+use Illuminate\View\Engines\CompilerEngine;
+use Illuminate\View\Engines\EngineResolver;
+use Illuminate\View\Engines\PhpEngine;
+use Illuminate\View\Factory;
+use Illuminate\View\FileViewFinder;
+use Symfony\Component\Console\Application;
+
+if (file_exists(__DIR__.'/../../autoload.php')) {
+    require __DIR__.'/../../autoload.php';
+} else {
+    require __DIR__.'/vendor/autoload.php';
+}
+
+Container::setInstance($container = new Container);
+
+$filesystem = new Filesystem;
+$eventDispatcher = new Dispatcher($container);
+$viewResolver = new EngineResolver;
+$bladeCompiler = new BladeCompiler($filesystem, __DIR__.'/cache');
+
+$viewResolver->register('blade', function () use ($bladeCompiler) {
+    return new CompilerEngine($bladeCompiler);
+});
+
+$viewResolver->register('php', function () {
+    return new PhpEngine;
+});
+
+$viewFinder = new FileViewFinder($filesystem, [__DIR__.'/src/Scripts']);
+$viewFactory = new Factory($viewResolver, $viewFinder, $eventDispatcher);
+$container->instance('script', $viewFactory);
+
+$app = new Application('Outfitter', '0.0.1');
+
+$app->add(new AddServerCommand);
+
+$app->run();

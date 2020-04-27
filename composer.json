@@ -1,0 +1,22 @@
+{
+    "name": "assembletrace/outfitter",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Wilson Bridgett",
+            "email": "wilson.bridgett@gmail.com"
+        }
+    ],
+    "require": {
+        "symfony/console": "^5.0",
+        "illuminate/support": "^7.8",
+        "illuminate/container": "^7.8",
+        "symfony/process": "^5.0",
+        "illuminate/view": "^7.8"
+    },
+    "autoload": {
+        "psr-4": {
+            "AssembleTrace\\Outfitter\\": "src/"
+        }
+    }
+}
