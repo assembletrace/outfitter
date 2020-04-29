@@ -6,10 +6,10 @@ use AssembleTrace\Outfitter\Helper;
 
 trait Runnable
 {
-    public static function run($target = null)
+    public static function run()
     {
         $task = new static(...func_get_args());
-        $task->target = $target ?? Helper::app('target');
+        $task->target = Helper::app('target');
         return $task->handle();
     }
 }

@@ -8,11 +8,18 @@ class SetupServer
 {
     use InteractsWithRemote, Runnable;
 
+    public $php;
+
+    public function __construct(string $php) {
+        $this->php = $php;
+    }
+
     public function handle()
     {
         $script = Helper::script('SetupServer', [
             'userPassword' => Helper::password(),
-            'databasePassword' => Helper::password()
+            'databasePassword' => Helper::password(),
+            'php' => $this->php
         ]);
 
         Helper::info($script);

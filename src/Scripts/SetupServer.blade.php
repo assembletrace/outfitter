@@ -35,7 +35,7 @@ echo "PasswordAuthentication no" | sudo tee -a /etc/ssh/sshd_config
 # Set the timezone to UTC
 sudo ln -sf /usr/share/zoneinfo/UTC /etc/localtime
 
-@include('php.74')
+@include('php.'.$php)
 
 @include('tools.nginx')
 

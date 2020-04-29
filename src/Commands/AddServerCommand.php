@@ -3,6 +3,7 @@
 namespace AssembleTrace\Outfitter\Commands;
 
 use AssembleTrace\Outfitter\Helper;
+use AssembleTrace\Outfitter\Tasks\CheckServerVersion;
 use AssembleTrace\Outfitter\Tasks\IsCleanServer;
 use AssembleTrace\Outfitter\Tasks\SetupServer;
 
@@ -22,11 +23,14 @@ class AddServerCommand extends Command
         $username = Helper::ask("username");
         $host = Helper::ask("Host / ip");
         $target = "$username@$host";
+        Helper::app()->instance('target', $target);
 
-        if(IsCleanServer::run($target)) {
+        if(IsCleanServer::run() && CheckServerVersion::run()) {
             //add the outfitter user
             Helper::line('Lets setup this server up');
-            SetupServer::run($target);
+            $php = Helper::menu('Which php', ['74' => '74', '73' => '73']);
+            Helper::line($php);
+            SetupServer::run($php);
         }
 
         //echo $script;

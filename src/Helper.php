@@ -4,6 +4,7 @@ namespace AssembleTrace\Outfitter;
 
 use Exception;
 use Illuminate\Container\Container;
+use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 class Helper
@@ -34,6 +35,12 @@ class Helper
         $style = new SymfonyStyle(static::app('input'), static::app('output'));
 
         return $style->ask($question, $default);
+    }
+
+    public static function menu($title, $choices)
+    {
+        $style = new SymfonyStyle(static::app('input'), static::app('output'));
+        return $style->askQuestion(new ChoiceQuestion($title, $choices));
     }
 
     public static function info($text)
